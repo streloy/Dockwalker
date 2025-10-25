@@ -547,6 +547,128 @@ class HomeService extends GetxService {
     }
   }
 
+  Future masterJobDepartment() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/master_job_department');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future masterJobCurrency() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/master_job_currency');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future masterJobExperience() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/master_job_experience');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future masterJobPeriod() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/master_job_period');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future masterJobVisa() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/master_job_visa');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future postNewJob(var jsonbody) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs');
+    var jsonheader = { "Content-Type": "application/json" };
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: headers, body: jsonbody );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        showSuccessSnack("Message", jsonDecode(response.body)['message']);
+        return true;
+      }
+    } catch (e) {
+      return { "success": false, "message": "Error: $e" };
+    }
+  }
+
   showMyDialod(var title, var message) {
     Get.dialog(
       AlertDialog(

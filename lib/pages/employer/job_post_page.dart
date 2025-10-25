@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dockwalker/utils/AppColors.dart';
 import 'package:dockwalker/services/home_service.dart';
+import 'package:dockwalker/controllers/employer/job_post_controller.dart';
 import 'package:get/get.dart';
 
 class JobPostPage extends StatefulWidget {
@@ -13,17 +14,9 @@ class JobPostPage extends StatefulWidget {
 
 class _JobPostPageState extends State<JobPostPage> {
 
+  final JobPostController controller = Get.put(JobPostController());
   final HomeService homeService = Get.find<HomeService>();
-  final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController companyNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController mobileController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
-  final TextEditingController websiteController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-
-  String? _selectedDepartment = 'Interior';
   String _selectedCurrency = 'EUR';
   String _selectedPeriod = 'week';
   bool _isUrgent = false;
@@ -32,9 +25,7 @@ class _JobPostPageState extends State<JobPostPage> {
   String _duration = 'Permanent';
 
   // Dummy data
-  final List<String> _departments = ['Interior', 'Deck', 'Galley', 'Engineering', 'Stewardess', 'Chef'];
-  final List<String> _currencies = ['EUR', 'USD', 'GBP'];
-  final List<String> _periods = ['day', 'week', 'month'];
+
 
   static ThemeData _buildPageTheme(BuildContext context) {
     // Get the default theme or the parent theme and copy/override it
@@ -80,115 +71,211 @@ class _JobPostPageState extends State<JobPostPage> {
           title: const Text( 'Post New Job' ),
           centerTitle: true,
         ),
-        body: SafeArea(
-          child: Column(
+        body: Obx(()=> SafeArea(
+          child: controller.homeService.urlloading.value == true ?
+          Center(child: CircularProgressIndicator()) :
+          Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // --- Basic Information Section ---
-                      _buildSectionTitle('Basic Information'),
-                      _buildTextField(label: 'Job Title *', hint: 'e.g., Chief Stewardess', initialValue: 'Chief Stewardess'),
-                      const SizedBox(height: 16),
-                      // Department
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 4.0),
-                        child: Text('Department *', style: TextStyle(fontWeight: FontWeight.w600)),
-                      ),
-                      _buildDepartmentChips(),
-                      const SizedBox(height: 16),
-                      // Yacht Name
-                      _buildTextField(label: 'Yacht Name', hint: 'e.g., M/Y Serenity', initialValue: 'M/Y Serenity'),
-                      const SizedBox(height: 16),
-                      // Location
-                      _buildTextField(
-                        label: 'Location *',
-                        hint: 'e.g., Monaco, Mediterranean',
-                        prefixIcon: const Icon(Icons.location_on_outlined, color: Colors.grey),
-                        initialValue: 'e.g., Monaco, Mediterranean',
-                      ),
-                      const SizedBox(height: 16),
+                  child: Form(
+                    key: controller.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _buildSectionTitle('Basic Information'),
+                        const SizedBox(height: 8),
 
-                      // --- Compensation Section ---
-                      _buildSectionTitle('Compensation'),
-                      // Min/Max Salary
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildTextField(label: 'Min Salary *', hint: '\$ 5000', initialValue: '5000'),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildTextField(label: 'Max Salary *', hint: '\$ 7000', initialValue: '7000'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
+                        Text('Job Title *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                            tlabel: "Job Title",
+                            tController: controller.titleController,
+                            tvalidator: controller.textValidation
+                        ),
+                        const SizedBox(height: 8),
 
-                      // Currency and Period Toggles
-                      Column(
-                        children: [
-                          // Currency Toggle
-                          _buildSegmentedToggle(
-                            options: _currencies,
-                            selectedValue: _selectedCurrency,
-                            onChanged: (val) => setState(() => _selectedCurrency = val),
-                            label: 'Currency',
-                          ),
-                          const SizedBox(height: 16),
-                          // Period Toggle
-                          _buildSegmentedToggle(
-                            options: _periods,
-                            selectedValue: _selectedPeriod,
-                            onChanged: (val) => setState(() => _selectedPeriod = val),
-                            label: 'Period',
-                          ),
-                        ],
-                      ),
+                        Text('Department *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        _buildDepartmentChips(),
+                        const SizedBox(height: 16),
 
-                      // --- Job Details Section ---
-                      _buildSectionTitle('Job Details'),
-                      // Description
-                      _buildTextField(
-                        label: 'Description *',
-                        maxLines: 4,
-                        hint: 'Describe the position, responsibilities, and what makes this opportunity unique...',
-                      ),
-                      const SizedBox(height: 16),
-                      // Requirements
-                      _buildTextField(
-                        label: 'Requirements *',
-                        maxLines: 5,
-                        initialValue: 'STCW Basic Safety Training\nENG1 Medical Certificate\n3+ years experience...',
-                      ),
-                      const SizedBox(height: 16),
+                        Text('Yacht Name *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                            tlabel: 'Yacht Name',
+                            tController: controller.yachtController,
+                            tvalidator: controller.textValidation
+                        ),
 
-                      // Start Date & Duration
-                      _buildDateAndDuration(),
-                      const SizedBox(height: 16),
+                        Text('Location *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                          tlabel: 'Location',
+                          tController: controller.locationController,
+                          tvalidator: controller.textValidation,
+                          prefixIcon: Icons.location_pin,
+                        ),
 
-                      // --- Visibility Options Section ---
-                      _buildSectionTitle('Visibility Options'),
-                      // Mark as Urgent
-                      _buildVisibilityOption(
-                        title: 'Mark as Urgent',
-                        subtitle: 'Highlight this job to attract more attention',
-                        value: _isUrgent,
-                        onChanged: (val) => setState(() => _isUrgent = val),
-                      ),
-                      // Feature this Job
-                      _buildVisibilityOption(
-                        title: 'Feature this Job',
-                        subtitle: 'Display prominently in search results',
-                        value: _isFeatured,
-                        onChanged: (val) => setState(() => _isFeatured = val),
-                      ),
-                      const SizedBox(height: 80), // Extra space for the floating footer
-                    ],
-                  ),
+                        _buildSectionTitle('Compensation'),
+                        const SizedBox(height: 8),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Min Salary *', style: TextStyle(fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 8),
+                                  _buildTextFormField(
+                                      tlabel: 'Min Salary',
+                                      tController: controller.salaryMinController,
+                                      tvalidator: controller.textValidation,
+                                      keyboardType: TextInputType.number
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Max Salary *', style: TextStyle(fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 8),
+                                  _buildTextFormField(
+                                      tlabel: 'Max Salary',
+                                      tController: controller.salaryMaxController,
+                                      tvalidator: controller.textValidation,
+                                      keyboardType: TextInputType.number
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Text('Currency *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        _buildCurrencyChips(),
+                        const SizedBox(height: 16),
+
+                        Text('Period *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        _buildPeriodChips(),
+                        const SizedBox(height: 16),
+
+                        _buildSectionTitle('Job Detail'),
+                        const SizedBox(height: 8),
+
+                        Text('Description *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                            tlabel: 'Description',
+                            tController: controller.descriptionController,
+                            tvalidator: controller.textValidation,
+                            minLine: 4,
+                            maxLine: 6
+                        ),
+
+                        Text('Requirements *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        Text('Separate each requirements with new line.', style: TextStyle(fontSize: 10, color: Colors.grey.shade400)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                            tlabel: 'Requirements',
+                            tController: controller.requirementsController,
+                            tvalidator: controller.textValidation,
+                            minLine: 4,
+                            maxLine: 6
+                        ),
+
+                        Text('Start Date *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildStartDateField(
+                            tlabel: 'Start Date',
+                            tController: controller.startDateController,
+                            tvalidator: controller.textValidation,
+                            prefixIcon: Icons.calendar_today,
+                            textEditingController: controller.startDateController
+                        ),
+
+                        Text('Deadline *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildStartDateField(
+                            tlabel: 'Deadline',
+                            tController: controller.deadlineController,
+                            tvalidator: controller.textValidation,
+                            prefixIcon: Icons.calendar_today,
+                            textEditingController: controller.deadlineController
+                        ),
+
+                        Text('Duration *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                            tlabel: 'Duration',
+                            tController: controller.durationController,
+                            tvalidator: controller.textValidation,
+                            prefixIcon: Icons.alarm
+                        ),
+
+                        Text('Vacancies *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildTextFormField(
+                            tlabel: 'Vacancies',
+                            tController: controller.vacanciesController,
+                            tvalidator: controller.textValidation,
+                            keyboardType: TextInputType.number
+                        ),
+
+                        Text('Required Experience *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildDropdownField(
+                          tlabel: 'Required Experience',
+                          selectedValue: controller.selectedExperience.value,
+                          items: controller.masterJobExperience.value,
+                          prefixIcon: Icons.work_outline,
+                          tvalidator: (value) {
+                            if (value == null || value.isEmpty) return "Please select a experience";
+                            return null;
+                          },
+                          onChanged: (value) {
+                            controller.selectedExperience.value = value ?? "";
+                          },
+                        ),
+
+                        Text('Visa *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        _buildDropdownField(
+                          tlabel: 'Visa',
+                          selectedValue: controller.selectedVisa.value,
+                          items: controller.masterJobVisa.value,
+                          prefixIcon: Icons.work_outline,
+                          tvalidator: (value) {
+                            if (value == null || value.isEmpty) return "Please select a visa";
+                            return null;
+                          },
+                          onChanged: (value) {
+                            controller.selectedVisa.value = value ?? "";
+                          },
+                        ),
+
+                        _buildSectionTitle('Visibility Options'),
+                        const SizedBox(height: 8),
+
+                        _buildVisibilityOption(
+                          title: 'Mark as Urgent',
+                          subtitle: 'Highlight this job to attract more attention',
+                          value: controller.isUrgent.value,
+                          onChanged: (val) => setState(() => controller.isUrgent.value = val),
+                        ),
+                        _buildVisibilityOption(
+                          title: 'Feature this Job',
+                          subtitle: 'Display prominently in search results',
+                          value: controller.isFeatured.value,
+                          onChanged: (val) => setState(() => controller.isFeatured.value = val),
+                        )
+                      ],
+                    ),
+                  )
                 ),
               ),
               // --- Sticky Footer/Action Buttons ---
@@ -209,22 +296,15 @@ class _JobPostPageState extends State<JobPostPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        // Logic to post the job
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Job Posted! (Action Placeholder)')),
-                        );
+                      onPressed: () async {
+                        bool success = await controller.postNewJob();
+                        if (success) { Navigator.pop(context); }
                       },
                       child: const Text('Post Job'),
                     ),
                     const SizedBox(height: 12),
                     OutlinedButton(
-                      onPressed: () {
-                        // Logic to cancel
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Cancelled. (Action Placeholder)')),
-                        );
-                      },
+                      onPressed: () { Get.back(); },
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
                         side: const BorderSide(color: Color(0xFF1E88E5)),
@@ -241,7 +321,7 @@ class _JobPostPageState extends State<JobPostPage> {
               ),
             ],
           ),
-        ),
+        )),
       )
     );
   }
@@ -259,7 +339,9 @@ class _JobPostPageState extends State<JobPostPage> {
     required TextEditingController tController,
     required FormFieldValidator<String> tvalidator,
     int maxLine= 4,
-    int minLine = 1 }) {
+    int minLine = 1,
+    TextInputType? keyboardType,
+    IconData? prefixIcon}) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 16),
@@ -268,44 +350,199 @@ class _JobPostPageState extends State<JobPostPage> {
         validator: tvalidator,
         maxLines: maxLine,
         minLines: minLine,
-        keyboardType: TextInputType.text,
+        keyboardType: keyboardType != null ? keyboardType : TextInputType.text,
         decoration: InputDecoration(
           labelText: tlabel,
+          prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: Colors.grey.shade400,) : null,
           labelStyle: const TextStyle( color: Colors.grey),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 1, color: Colors.grey),
+            borderSide: const BorderSide(width: .1, color: Colors.grey),
             borderRadius: BorderRadius.circular(12),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 2, color: Colors.grey),
+            borderSide: const BorderSide(width: 1, color: Colors.grey),
             borderRadius: BorderRadius.circular(12),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(width: 1, color: Colors.red),
+            borderSide: BorderSide(width: .1, color: Colors.red),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(width: 2.0, color: Colors.red),
+            borderSide: BorderSide(width: 1, color: Colors.red),
           ),
         ),
       ),
     );
   }
 
-  // Helper widget for department chips/toggles
+  Widget _buildStartDateField({
+    required String tlabel,
+    required TextEditingController tController,
+    required FormFieldValidator<String> tvalidator,
+    int maxLine= 4,
+    int minLine = 1,
+    TextInputType? keyboardType,
+    TextEditingController? textEditingController,
+    IconData? prefixIcon}) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 16),
+      child: TextFormField(
+        controller: tController,
+        validator: tvalidator,
+        maxLines: maxLine,
+        minLines: minLine,
+        keyboardType: keyboardType != null ? keyboardType : TextInputType.text,
+        readOnly: true,
+        onTap: () { controller.selectDate(textEditingController!); },
+        decoration: InputDecoration(
+          labelText: tlabel,
+          prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: Colors.grey.shade400,) : null,
+          labelStyle: const TextStyle( color: Colors.grey),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: .1, color: Colors.grey),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 1, color: Colors.grey),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(width: .1, color: Colors.red),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(width: 1, color: Colors.red),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownField({
+    required String tlabel,
+    required String? selectedValue,
+    required List<String> items,
+    required FormFieldValidator<String> tvalidator,
+    required ValueChanged<String?> onChanged,
+    IconData? prefixIcon,
+  }) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16),
+      child: DropdownButtonFormField<String>(
+        value: selectedValue,
+        validator: tvalidator,
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          labelText: tlabel,
+          prefixIcon: prefixIcon != null
+              ? Icon(prefixIcon, color: Colors.grey.shade400)
+              : null,
+          labelStyle: const TextStyle(color: Colors.grey),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 0.1, color: Colors.grey),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 1, color: Colors.grey),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(width: 0.1, color: Colors.red),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(width: 1, color: Colors.red),
+          ),
+        ),
+        items: items.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   Widget _buildDepartmentChips() {
     return Wrap(
       spacing: 8.0,
       runSpacing: 4.0,
-      children: _departments.map((department) {
-        final isSelected = department == _selectedDepartment;
+      children: controller.masterJobDepartment.map((department) {
+        final isSelected = department == controller.selectedDepartment.value;
         return FilterChip(
           label: Text(department),
           selected: isSelected,
           onSelected: (bool selected) {
             setState(() {
-              _selectedDepartment = selected ? department : null;
+              controller.selectedDepartment.value = selected ? department : null;
+            });
+          },
+          labelStyle: TextStyle(
+            color: isSelected ? Colors.white : Colors.black87,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+          backgroundColor: const Color(0xFFF5F5F5),
+          selectedColor: const Color(0xFF1E88E5), // Primary blue
+          showCheckmark: false,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide.none,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildCurrencyChips() {
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 4.0,
+      children: controller.masterJobCurrency.map((department) {
+        final isSelected = department == controller.selectedCurrency.value;
+        return FilterChip(
+          label: Text(department),
+          selected: isSelected,
+          onSelected: (bool selected) {
+            setState(() {
+              controller.selectedCurrency.value = selected ? department : null;
+            });
+          },
+          labelStyle: TextStyle(
+            color: isSelected ? Colors.white : Colors.black87,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+          backgroundColor: const Color(0xFFF5F5F5),
+          selectedColor: const Color(0xFF1E88E5), // Primary blue
+          showCheckmark: false,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide.none,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildPeriodChips() {
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 4.0,
+      children: controller.masterJobPeriod.map((department) {
+        final isSelected = department == controller.selectedPeriod.value;
+        return FilterChip(
+          label: Text(department),
+          selected: isSelected,
+          onSelected: (bool selected) {
+            setState(() {
+              controller.selectedPeriod.value = selected ? department : null;
             });
           },
           labelStyle: TextStyle(
@@ -327,7 +564,7 @@ class _JobPostPageState extends State<JobPostPage> {
 
   // Helper widget for currency/period toggles
   Widget _buildSegmentedToggle({
-    required List<String> options,
+    required List<dynamic> options,
     required String selectedValue,
     required ValueChanged<String> onChanged,
     required String label,
