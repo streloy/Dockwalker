@@ -2,12 +2,15 @@ import 'package:dockwalker/pages/auth/login_candidate_page.dart';
 import 'package:dockwalker/pages/auth/login_employer_page.dart';
 import 'package:dockwalker/services/home_service.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
 
 class DashboardEmployerController extends GetxController {
 
   final HomeService homeService = Get.find<HomeService>();
 
   var isLoading = false.obs;
+  var pageNumber = 1.obs;
+  var pageTotal = 0.obs;
   var jobList = [].obs;
 
   @override
@@ -16,12 +19,21 @@ class DashboardEmployerController extends GetxController {
     super.onInit();
   }
 
+
+  @override
+  void onReady() {
+    this.fetchJobInfo();
+  }
+
   Future pageRefresh() async {
-    jobList.value = [];
+    print("SAIM");
+    this.fetchJobInfo();
   }
 
   Future fetchJobInfo() async {
-    var body = await homeService.getJob(pageNumber.value);
+    pageNumber.value = 1;
+    jobList.value = [];
+    var body = await homeService.getEmployerJob(pageNumber.value);
     var data = jsonDecode(body);
     jobList.addAll(data['result']['data']);
     pageNumber.value = data['result']['current_page'];

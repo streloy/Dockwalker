@@ -22,6 +22,7 @@ class JobDetailController extends GetxController {
 
   Future userInfo() async {
     var response = await homeService.candidateInfo();
+    if(response.isNull) { return; }
     var result = jsonDecode(response)['result'];
     userid.value = result['user_id'];
   }

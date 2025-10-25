@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dockwalker/utils/AppColors.dart';
+import 'package:dockwalker/pages/employer/edit_employer_profile_page.dart';
+import 'package:dockwalker/pages/employer/job_post_page.dart';
+
 
 class HomeEmployerPage extends StatefulWidget {
   const HomeEmployerPage({super.key});
@@ -22,7 +25,12 @@ class _HomeEmployerPageState extends State<HomeEmployerPage> {
         backgroundColor: AppColors.secondary,
         title: Text(_controller.selectedTitle.value, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white) ),
         actions: [
-          if (_controller.selectedIndex.value == 0) TextButton( child: Text("Post Job", style: TextStyle(color: Colors.white)), onPressed: () { } ),
+          if (_controller.selectedIndex.value == 0) TextButton( child: Text("Post Job", style: TextStyle(color: Colors.white)), onPressed: () {
+            Get.to(()=> JobPostPage(), transition: Transition.rightToLeft);
+          }),
+          if (_controller.selectedIndex.value == 3) TextButton( child: Text("Update Info", style: TextStyle(color: Colors.white)), onPressed: () {
+            Get.to(()=> EditEmployerProfilePage(), transition: Transition.rightToLeft);
+          }),
         ],
       ),
       body: _controller.pages[_controller.selectedIndex.value],

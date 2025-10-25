@@ -78,6 +78,7 @@ class _MessageCandidatePageState extends State<MessageCandidatePage> {
             children: [
               Expanded(
                 child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   controller: _scrollController,
                   padding: const EdgeInsets.all(8),
                   itemCount: controller.messages.length,

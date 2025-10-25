@@ -63,16 +63,6 @@ class _DashboardCandidatePageState extends State<DashboardCandidatePage> {
                 } else {
                   dynamic item = _controller.jobList[index];
                   return GestureDetector(
-                    // child: Myjobcard(
-                    //   imageUrl: item['logourl'] ?? "",
-                    //   company: item['company_name'],
-                    //   title: item['title'],
-                    //   description: item['short_description'],
-                    //   location: item['location'],
-                    //   budget: item['salary'],
-                    //   createdDate: item['posted_on'],
-                    //   dadeline: item['deadline'],
-                    // ),
                     child: Jobcard(job: item),
                     onTap: () {
                       Get.to(

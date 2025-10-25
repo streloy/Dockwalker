@@ -83,7 +83,10 @@ class HomeService extends GetxService {
   }
   // Auth Page End
 
-  // Profile
+  // ---------------------------------
+  // Employer APIS
+  // ---------------------------------
+
   Future candidateInfo() async {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/');
@@ -179,9 +182,7 @@ class HomeService extends GetxService {
       showDangerSnack("Message", e.toString());
     }
   }
-  // Profile End
 
-  // Dashboard
   Future getJob(var page) async {
     loading = true;
     urlloading.value = true;
@@ -274,9 +275,7 @@ class HomeService extends GetxService {
       showDangerSnack("Message", e.toString());
     }
   }
-  // Dashboard End
 
-  // Messages
   Future getMessages() async {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/messages');
@@ -331,7 +330,6 @@ class HomeService extends GetxService {
       showDangerSnack("Message", e.toString());
     }
   }
-  // Messages End
 
   // ---------------------------------
   // Employer APIS
@@ -340,7 +338,7 @@ class HomeService extends GetxService {
   Future getEmployerJob(var page) async {
     loading = true;
     urlloading.value = true;
-    var url = Uri.parse('${baseurl}candidate/jobs?limit=20&page=${page}');
+    var url = Uri.parse('${baseurl}employer/jobs?limit=200&page=${page}');
     var token = await getStorage.read("TOKEN").toString();
     var headers = { "authorization": "${token}" };
     try {
@@ -348,11 +346,201 @@ class HomeService extends GetxService {
       loading = false;
       urlloading.value = false;
       if(response.statusCode != 200) {
-        Get.snackbar("Message", jsonDecode(response.body)['message'], snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.GROUNDED);
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
         return;
       } else {
         return response.body;
       }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future getJobAppliedCandidates(var jid) async {
+    loading = true;
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/appied_candidates?jid=${jid}');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      loading = false;
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return response.body;
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future getCandidateList(var page) async {
+    loading = true;
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/candidate?limit=200&page=${page}');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      loading = false;
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return response.body;
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future getCandidateDetail (var candidateId) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/candidate?id=${candidateId}');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return response.body;
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future getEmployerMessages() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/messages');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future getEmployerMessageDetail(var candidate_id) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/messages/detail?candidate_id=${candidate_id}');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future sendEmployerMessage(var candidate_id, var content) async {
+    var url = Uri.parse('${baseurl}employer/messages');
+    var jsonbody = jsonEncode({ "candidate_id": candidate_id, "content": content });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+      }
+    } catch (e) {
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future employerInfo() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/profile/');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return response.body;
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future updateEmployerInfo(String company_name, String mobile, String address, String website, String description) async {
+    showMyDialod("Loading", "Please wait.");
+    var url = Uri.parse('${baseurl}employer/profile');
+    var jsonbody = jsonEncode({ "company_name": company_name, "mobile": mobile, "address": address, "website": website, "description": description });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      closeMyDialog();
+      if(response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        showSuccessSnack("Message", data['message']);
+        return data['result'];
+      } else {
+        showDangerSnack("Message", "Something went wrong!");
+      }
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future uploadEmployerLogo(String photourl) async {
+    showMyDialod("Loading", "Please wait.");
+    var url = Uri.parse('${baseurl}employer/profile/logo');
+    var token = await getStorage.read("TOKEN").toString();
+    var request = http.MultipartRequest('POST', url);
+    request.headers['authorization'] = token;
+    request.files.add(await http.MultipartFile.fromPath('file', photourl));
+    try {
+      var response = await request.send();
+      closeMyDialog();
+      if(response.statusCode == 200) {
+        var body = await response.stream.bytesToString();
+        var data = jsonDecode(body);
+        showSuccessSnack("Message", data['message']);
+        return data['result'];
+      } else {
+        var body = await response.stream.bytesToString();
+        var message = jsonDecode(body)['message'];
+        showDangerSnack("Message", message);
+      }
+      return response;
     } catch (e) {
       closeMyDialog();
       showDangerSnack("Message", e.toString());
