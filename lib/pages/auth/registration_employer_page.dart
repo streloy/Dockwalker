@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dockwalker/controllers/auth/registration_employer_controller.dart';
 
 class RegistrationEmployerPage extends StatefulWidget {
   const RegistrationEmployerPage({super.key});
@@ -9,6 +10,9 @@ class RegistrationEmployerPage extends StatefulWidget {
 }
 
 class _RegistrationEmployerPageState extends State<RegistrationEmployerPage> {
+
+  final RegistrationEmployerController _controller = Get.put(RegistrationEmployerController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,101 +63,133 @@ class _RegistrationEmployerPageState extends State<RegistrationEmployerPage> {
                 Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                    child: Form(
+                      key: _controller.formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
 
-                        // Email input
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextField(
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              labelText: "Company Email",
-                              labelStyle: const TextStyle(color: Colors.white),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white, width: 1),
-                                borderRadius: BorderRadius.circular(32),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white, width: 2),
-                                borderRadius: BorderRadius.circular(32),
+                          // Email input
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _controller.emailController,
+                              validator: _controller.emailValidation,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                labelText: "Company Email",
+                                labelStyle: const TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 1),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 2),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // Password input
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextField(
-                            obscureText: true,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              labelText: "Password",
-                              labelStyle: const TextStyle(color: Colors.white),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white, width: 1),
-                                borderRadius: BorderRadius.circular(32),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white, width: 2),
-                                borderRadius: BorderRadius.circular(32),
+                          // Mobile
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _controller.mobileController,
+                              validator: _controller.mobileValidation,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                labelText: "Company Mobile",
+                                labelStyle: const TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 1),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 2),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // Confirm Password input
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextField(
-                            obscureText: true,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              labelText: "Confirm Password",
-                              labelStyle: const TextStyle(color: Colors.white),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white, width: 1),
-                                borderRadius: BorderRadius.circular(32),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.white, width: 2),
-                                borderRadius: BorderRadius.circular(32),
+                          // Password input
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _controller.passwordController,
+                              validator: _controller.passwordValidation,
+                              obscureText: true,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                                labelStyle: const TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 1),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 2),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 32),
+                          const SizedBox(height: 16),
 
-                        SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.white, width: 1),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 18),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(32),
+                          // Confirm Password input
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _controller.passwordCController,
+                              validator: _controller.passwordValidation,
+                              decoration: InputDecoration(
+                                labelText: "Confirm Password",
+                                labelStyle: const TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 1),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 2),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
                               ),
                             ),
-                            onPressed: () { },
-                            icon: Icon(Icons.person_add, size: 18 ),
-                            label: const Text( "Register", style: TextStyle( color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold ), ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text( "Already have account?", style: TextStyle( color: Colors.white, fontSize: 14 ) ),
-                            InkWell( onTap: () { Get.back(); }, child: Text( "Login", style: TextStyle( color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold ) )),
-                          ],
-                        ),
-                      ],
+                          const SizedBox(height: 32),
+
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(color: Colors.white, width: 1),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(vertical: 18),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32),
+                                  ),
+                                ),
+                                onPressed: () { _controller.registerNewEmployer(); },
+                                // icon: Icon(Icons.person_add, size: 18 ),
+                                // label: const Text( "Register", style: TextStyle( color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold ), ),
+                                icon: Obx(()=> _controller.homeService.urlloading.value == true ? Text("") : Icon(Icons.person_add, size: 18, color: Colors.white ) ),
+                                label: Obx(()=> _controller.homeService.urlloading.value == true ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white) ) : Text( "Register", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white ) ))
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text( "Already have account?", style: TextStyle( color: Colors.white, fontSize: 14 ) ),
+                              InkWell( onTap: () { Get.back(); }, child: Text( "Login", style: TextStyle( color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold ) )),
+                            ],
+                          ),
+                        ],
+                      ),
                     )
                 ),
 

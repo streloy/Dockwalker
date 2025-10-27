@@ -37,6 +37,7 @@ class RegistrationCandidateController extends GetxController {
         homeService.getStorage.write("TOKEN", body['token']);
         homeService.getStorage.write("EMAIL", email);
         homeService.getStorage.write("PASSWORD", password);
+        homeService.getStorage.write("USERTYPE", 'candidate');
         Get.offAll(()=> HomeCandidatePage(), transition: Transition.downToUp);
       } else {
         Get.snackbar("Login", body['message'], backgroundColor: Colors.white, snackPosition: SnackPosition.BOTTOM);

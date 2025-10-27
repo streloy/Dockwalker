@@ -149,7 +149,7 @@ class _SearchEmployerPageState extends State<SearchEmployerPage> {
                       onTap: () {
                         print("SAIM");
                         Get.to( () => CandidateDetailPage(),
-                          arguments: {'candidate_id': item['id']},
+                          arguments: {'candidate_id': item['id'], 'candidate': item},
                           transition: Transition.rightToLeft,
                         );
                       },

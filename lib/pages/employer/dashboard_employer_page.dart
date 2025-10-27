@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:dockwalker/controllers/employer/dashboard_employer_controller.dart';
 import 'package:dockwalker/components/employer_jobcard.dart';
 import 'package:dockwalker/pages/employer/job_detail_page.dart';
+import 'package:dockwalker/pages/employer/job_post_page.dart';
+
 
 class DashboardEmployerPage extends StatefulWidget {
   const DashboardEmployerPage({super.key});
@@ -65,7 +67,7 @@ class _DashboardEmployerPageState extends State<DashboardEmployerPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () { Get.to(()=> JobPostPage(), transition: Transition.rightToLeft); },
                   ),
                 ],
               ),

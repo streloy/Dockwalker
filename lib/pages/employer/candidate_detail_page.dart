@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:dockwalker/utils/AppColors.dart';
 
 class CandidateDetailPage extends StatefulWidget {
@@ -35,6 +36,26 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
     },
   ];
 
+  dynamic params = Get.arguments;
+  var candidateId = "";
+  var candidateInfo = {};
+  List<String> skills = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+      setState(() {
+        candidateId = params['candidate_id'];
+        candidateInfo = params['candidate'];
+        skills = List<String>.from(candidateInfo['skills_new'] ?? []);
+        print(candidateInfo);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,26 +75,22 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
               child: Column(
                 children: [
                   ClipOval(
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1502685104226-ee32379fefbe',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.network( candidateInfo['photo'], width: 100, height: 100, fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) { return Image.asset( 'assets/logo.png', width: 100, height: 100, fit: BoxFit.cover, ); } ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Sarah Johnson',
+                  Text(
+                    candidateInfo['fullname'] ?? "",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  const Text('Chief Stewardess', style: TextStyle(color: Colors.black54)),
+                  Text(candidateInfo['email'] ?? "", style: TextStyle(color: Colors.black54)),
+                  Text(candidateInfo['mobile'] ?? "", style: TextStyle(color: Colors.black54)),
                   const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(CupertinoIcons.location_solid, size: 16, color: Colors.black54),
                       SizedBox(width: 4),
-                      Text('Monaco', style: TextStyle(color: Colors.black54)),
+                      Text(candidateInfo['address'] ?? "", style: TextStyle(color: Colors.black54)),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -224,7 +241,43 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
             const Divider(),
             const SizedBox(height: 24),
 
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text( 'Experience', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold) ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text( candidateInfo['experience'] ?? "" ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text( 'Education', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold) ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text( candidateInfo['education'] ?? "" ),
+              ),
+            ),
+
+
+
             /// --- Skills Section ---
+            SizedBox(height: 16),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Align(
@@ -236,12 +289,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: [
-                skillChip('Interior Service'),
-                skillChip('Guest Relations'),
-                skillChip('Wine Service'),
-                skillChip('Event Planning'),
-              ],
+              children: skills.map((skill) => skillChip(skill)).toList(),
             ),
 
             SizedBox(height: 32),

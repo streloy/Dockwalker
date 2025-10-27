@@ -47,12 +47,13 @@ class _EditEmployerProfilePageState extends State<EditEmployerProfilePage> {
     dynamic a = await homeService.employerInfo();
     setState(() {
       employer = jsonDecode(a)['result'];
-      companyNameController.text = employer['company_name'];
-      emailController.text = employer['email'];
-      mobileController.text = employer['mobile'];
-      addressController.text = employer['address'];
-      websiteController.text = employer['website'];
-      descriptionController.text = employer['description'];
+      print(employer);
+      companyNameController.text = employer['company_name'] ?? "";
+      emailController.text = employer['email'] ?? "";
+      mobileController.text = employer['mobile'] ?? "";
+      addressController.text = employer['address'] ?? "";
+      websiteController.text = employer['website'] ?? "";
+      descriptionController.text = employer['description'] ?? "";
     });
   }
 
@@ -130,7 +131,10 @@ class _EditEmployerProfilePageState extends State<EditEmployerProfilePage> {
                       CircleAvatar(
                         radius: 48,
                         backgroundColor: Colors.grey.shade200,
-                        backgroundImage: _selectedLogo != null ? FileImage(_selectedLogo!) : NetworkImage(employer['logo']!) as ImageProvider,
+                        backgroundImage: _selectedLogo != null ? FileImage(_selectedLogo!) :
+                        (employer['logo'] != null && employer['logo'].isNotEmpty)
+                            ? NetworkImage(employer['logo']!)
+                            : const AssetImage('assets/logo.png') as ImageProvider,
                         child: _selectedLogo == null && employer['logo'] == null ? Image.asset('assets/logo.png', width: 48, height: 48) : null,
                       ),
                       Positioned(

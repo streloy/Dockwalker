@@ -52,6 +52,21 @@ class HomeService extends GetxService {
     }
   }
 
+  Future registerEmployer(String email, String mobile, String password, String passwordc) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/auth/registration');
+    var jsonbody = jsonEncode({ "email": email, "mobile": mobile, "password": password, "passwordc": passwordc });
+    var jsonheader = { "Content-Type": "application/json" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      urlloading.value = false;
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      return { "success": false, "message": "Error: $e" };
+    }
+  }
+
   Future sendResetCode(String email) async {
     showMyDialod("Loading", "Please wait.");
     var url = Uri.parse('${baseurl}candidate/auth/resetcode');

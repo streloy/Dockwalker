@@ -64,7 +64,9 @@ class _ProfileEmployerPageState extends State<ProfileEmployerPage> {
             CircleAvatar(
               radius: 48,
               backgroundColor: Colors.grey.shade200,
-              backgroundImage: NetworkImage(employer['logo']!),
+              backgroundImage: (employer['logo'] != null && employer['logo'].isNotEmpty)
+                  ? NetworkImage(employer['logo']!)
+                  : const AssetImage('assets/logo.png') as ImageProvider,
               onBackgroundImageError: (_, __) {},
               child: employer['logo'] == null ? Image.asset('assets/logo.png', width: 48, height: 48) : null,
             ),
