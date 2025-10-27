@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:dockwalker/pages/employer/message_employer_page.dart';
 
 class JobAppliedCandidate extends StatelessWidget {
   final dynamic job;
@@ -29,7 +31,8 @@ class JobAppliedCandidate extends StatelessWidget {
         subtitle: Text(job['expected_salary']),
         trailing: Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () {
-          // handle tap if needed
+          print(job);
+          Get.to(()=> MessageEmployerPage(), arguments: { 'title': job["fullname"], 'candidate_id': job['candidate_id'] }, transition: Transition.rightToLeft);
         },
       ),
     );

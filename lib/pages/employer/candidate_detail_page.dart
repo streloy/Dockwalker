@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dockwalker/utils/AppColors.dart';
+import 'package:dockwalker/pages/employer/message_employer_page.dart';
 
 class CandidateDetailPage extends StatefulWidget {
   const CandidateDetailPage({super.key});
@@ -330,7 +331,8 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                         ),
                       ),
                       onPressed: () {
-                        // Get.to(()=> MessageCandidatePage(), arguments: { 'title': _controller.jobdata['company_name'], 'employer_id': _controller.jobdata['employer_id'], 'candidate_id': _controller.userid.value, 'sender_id': _controller.userid.value  }, transition: Transition.rightToLeft);
+                        print(candidateInfo);
+                        Get.to(()=> MessageEmployerPage(), arguments: { 'title': candidateInfo["fullname"], 'candidate_id': candidateInfo['user_id'] }, transition: Transition.rightToLeft);
                       },
                     ),
                   )
