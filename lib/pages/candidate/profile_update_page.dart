@@ -113,7 +113,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: const BoxDecoration(
-                          color: Colors.blue,
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
@@ -137,7 +137,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                       backgroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(32),
                       ),
                     ),
                     onPressed: () { _controller.openResume(); },
@@ -154,7 +154,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                       backgroundColor: AppColors.secondary,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(32),
                       ),
                     ),
                     onPressed: () { pickFile(); },
@@ -172,7 +172,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                       backgroundColor: Colors.red,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(32),
                       ),
                     ),
                     onPressed: () { },
@@ -338,24 +338,6 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                   ),
 
                   SizedBox(height: 20),
-                  // QuillSimpleToolbar(controller: _controller.quillController),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   height: 400,
-                  //   child: Container(
-                  //     padding: const EdgeInsets.all(10),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.white,
-                  //       border: Border.all(color: Colors.black12, width: 1)
-                  //     ),
-                  //     child: QuillEditor.basic(
-                  //       controller: _controller.quillController,
-                  //     ),
-                  //   ),
-                  // ),
-
-
-                  SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
@@ -363,16 +345,17 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                         side: const BorderSide(color: AppColors.secondary, width: 1),
                         foregroundColor: Colors.white,
                         backgroundColor: AppColors.secondary,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(32),
                         ),
                       ),
                       onPressed: () { _controller.updateProfile(); },
                       icon: Icon(Icons.login, size: 18 ),
-                      label: const Text( "Update Info", style: TextStyle( color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold ), ),
+                      label: const Text( "Update Info", style: TextStyle( color: Colors.white, fontWeight: FontWeight.bold ), ),
                     ),
                   ),
+                  SizedBox(height: 50)
                 ],
               )
             )

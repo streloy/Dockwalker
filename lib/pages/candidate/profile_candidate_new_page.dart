@@ -274,9 +274,11 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: skills.map((item) {
+                alignment: WrapAlignment.start,
+                runAlignment: WrapAlignment.start,
+                children: controller.skills_new.map((item) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.primary, width: 1),
                       borderRadius: BorderRadius.circular(32),

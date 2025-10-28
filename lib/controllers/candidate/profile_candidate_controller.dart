@@ -17,6 +17,7 @@ class ProfileCandidateController extends GetxController {
   var skills = "".obs;
   var photourl = "".obs;
   var resumeurl = "".obs;
+  var skills_new = [].obs;
 
 
   var certificateList = [
@@ -50,6 +51,7 @@ class ProfileCandidateController extends GetxController {
     skills.value = result['skills'];
     photourl.value = result['photourl'];
     resumeurl.value = result['resumeurl'];
+    skills_new.value = result['skills_new'];
   }
 
   Future<void> refreshData() async {
