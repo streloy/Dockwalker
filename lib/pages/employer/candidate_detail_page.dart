@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dockwalker/utils/AppColors.dart';
 import 'package:dockwalker/pages/employer/message_employer_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CandidateDetailPage extends StatefulWidget {
   const CandidateDetailPage({super.key});
@@ -52,9 +53,30 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
         candidateId = params['candidate_id'];
         candidateInfo = params['candidate'];
         skills = List<String>.from(candidateInfo['skills_new'] ?? []);
-        print(candidateInfo);
       });
     });
+  }
+
+  Future<void> sendEmail(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+      queryParameters: {
+        'subject': "Email Subject",
+        'body': "",
+      },
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(
+        emailUri,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No email app found on this device.')),
+      );
+    }
   }
 
   @override
@@ -76,7 +98,9 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
               child: Column(
                 children: [
                   ClipOval(
-                    child: Image.network( candidateInfo['photo'], width: 100, height: 100, fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) { return Image.asset( 'assets/logo.png', width: 100, height: 100, fit: BoxFit.cover, ); } ),
+                    child: candidateInfo['photo'] != null && candidateInfo['photo'].toString().isNotEmpty ?
+                    Image.network( candidateInfo['photo'], width: 100, height: 100, fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) { return Image.asset( 'assets/logo.png', width: 100, height: 100, fit: BoxFit.cover, ); } ) :
+                    Image.asset( 'assets/logo.png', width: 100, height: 100, fit: BoxFit.cover )
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -109,7 +133,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade700,
+                      color: AppColors.primary,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Text(
@@ -140,8 +164,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                       color: Colors.blue.shade50,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text('New Application',
-                        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600)),
+                    child: const Text('New Application', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600)),
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -304,16 +327,15 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                       icon: Icon(CupertinoIcons.envelope),
                       label: Text("Email"),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.blue, width: 1),
-                        foregroundColor: Colors.blue,
+                        side: BorderSide(color: AppColors.primary, width: 1),
+                        foregroundColor: AppColors.primary,
                         backgroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)
-                        ),
+                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(12) ),
                       ),
                       onPressed: () {
-
+                        print(candidateInfo['email']);
+                        sendEmail(candidateInfo['email']);
                       },
                     ),
                   ),
@@ -323,7 +345,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                       icon: Icon(CupertinoIcons.chat_bubble_2),
                       label: Text("Message"),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
@@ -331,7 +353,6 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                         ),
                       ),
                       onPressed: () {
-                        print(candidateInfo);
                         Get.to(()=> MessageEmployerPage(), arguments: { 'title': candidateInfo["fullname"], 'candidate_id': candidateInfo['user_id'] }, transition: Transition.rightToLeft);
                       },
                     ),
@@ -353,7 +374,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
         color: Colors.blue.shade50,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(label, style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.w500)),
+      child: Text(label, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500)),
     );
   }
 }

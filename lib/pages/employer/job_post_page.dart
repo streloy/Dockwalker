@@ -4,6 +4,7 @@ import 'package:dockwalker/utils/AppColors.dart';
 import 'package:dockwalker/services/home_service.dart';
 import 'package:dockwalker/controllers/employer/job_post_controller.dart';
 import 'package:get/get.dart';
+import 'package:dockwalker/utils/AppColors.dart';
 
 class JobPostPage extends StatefulWidget {
   const JobPostPage({super.key});
@@ -30,11 +31,12 @@ class _JobPostPageState extends State<JobPostPage> {
   static ThemeData _buildPageTheme(BuildContext context) {
     // Get the default theme or the parent theme and copy/override it
     return Theme.of(context).copyWith(
-      primaryColor: const Color(0xFF1E88E5), // Blue 600 for primary
+      // primaryColor: const Color(0xFF1E88E5),
+      primaryColor: AppColors.primary,
       colorScheme: ColorScheme.fromSwatch(
         primarySwatch: Colors.blue,
       ).copyWith(
-        secondary: const Color(0xFF1E88E5), // Blue for accents
+        secondary: AppColors.secondary,
       ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
@@ -300,6 +302,10 @@ class _JobPostPageState extends State<JobPostPage> {
                         bool success = await controller.postNewJob();
                         if (success) { Navigator.pop(context); }
                       },
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: AppColors.secondary,
+                        foregroundColor: Colors.white
+                      ),
                       child: const Text('Post Job'),
                     ),
                     const SizedBox(height: 12),
@@ -307,12 +313,12 @@ class _JobPostPageState extends State<JobPostPage> {
                       onPressed: () { Get.back(); },
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
-                        side: const BorderSide(color: Color(0xFF1E88E5)),
+                        side: BorderSide(color: AppColors.secondary),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        foregroundColor: const Color(0xFF1E88E5),
-                        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        foregroundColor: AppColors.primary,
+                        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       child: const Text('Cancel'),
                     ),
@@ -488,7 +494,7 @@ class _JobPostPageState extends State<JobPostPage> {
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
           backgroundColor: const Color(0xFFF5F5F5),
-          selectedColor: const Color(0xFF1E88E5), // Primary blue
+          selectedColor: AppColors.primary,
           showCheckmark: false,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -519,7 +525,7 @@ class _JobPostPageState extends State<JobPostPage> {
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
           backgroundColor: const Color(0xFFF5F5F5),
-          selectedColor: const Color(0xFF1E88E5), // Primary blue
+          selectedColor: AppColors.primary, // Primary blue
           showCheckmark: false,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -550,7 +556,7 @@ class _JobPostPageState extends State<JobPostPage> {
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
           backgroundColor: const Color(0xFFF5F5F5),
-          selectedColor: const Color(0xFF1E88E5), // Primary blue
+          selectedColor: AppColors.primary, // Primary blue
           showCheckmark: false,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -787,7 +793,7 @@ class _JobPostPageState extends State<JobPostPage> {
             onChanged: onChanged,
             inactiveTrackColor: const Color(0xFFE0E0E0),
             inactiveThumbColor: const Color(0xFF9E9E9E),
-            activeColor: const Color(0xFF1E88E5), // Primary blue
+            activeColor: AppColors.primary, // Primary blue
           ),
         ],
       ),

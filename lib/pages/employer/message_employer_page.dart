@@ -82,7 +82,7 @@ class _MessageEmployerPageState extends State<MessageEmployerPage> {
                           margin: EdgeInsets.symmetric(vertical: 4),
                           constraints: BoxConstraints( maxWidth: MediaQuery.of(context).size.width * 0.7),
                           decoration: BoxDecoration(
-                            color: msg["sender_id"] == msg['employer_id'] ? Colors.blue : Colors.grey[300],
+                            color: msg["sender_id"] == msg['employer_id'] ? AppColors.primary : Colors.grey[300],
                             borderRadius: BorderRadius.only(
                               topLeft: const Radius.circular(12),
                               topRight: const Radius.circular(12),
@@ -124,7 +124,7 @@ class _MessageEmployerPageState extends State<MessageEmployerPage> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.send, color: Colors.blue),
+                        icon: const Icon(Icons.send, color: AppColors.primary),
                         onPressed: sendMessage,
                       )
                     ],

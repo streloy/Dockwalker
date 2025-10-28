@@ -354,7 +354,7 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                 icon: const Icon(Icons.logout),
                 label: const Text("Log Out"),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(

@@ -172,7 +172,7 @@ class _EditEmployerProfilePageState extends State<EditEmployerProfilePage> {
                   icon: const Icon(CupertinoIcons.checkmark_alt, size: 20),
                   label: const Text("Save Changes", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(

@@ -39,11 +39,11 @@ class _JobDetailPageState extends State<JobDetailPage> {
         backgroundColor: AppColors.secondary,
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Obx(()=>
-        _controller.homeService.urlloading.value == true ? Container(margin: EdgeInsets.symmetric(vertical: 30), child: Center(child: CircularProgressIndicator())) :
-        _controller.jobdata.isEmpty ? Container(margin: EdgeInsets.symmetric(vertical: 30), child: Center(child: CircularProgressIndicator())) :
-        Column(
+      body:Obx(()=>
+      _controller.homeService.urlloading.value == true ? Center(child: CircularProgressIndicator()) :
+      _controller.jobdata.isEmpty ? Container(margin: EdgeInsets.symmetric(vertical: 30), child: Center(child: Text("No Job Found!", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))) :
+      SingleChildScrollView(
+        child: Column(
           children: [
             // Top banner image
             Image.network( _controller.jobdata['logourl'], height: 200, width: double.infinity, fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) { return Icon( Icons.maps_home_work, size: 40 ); } ),
@@ -161,8 +161,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             icon: Icon(CupertinoIcons.chat_bubble_2),
                             label: Text("Message"),
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Colors.blue, width: 1),
-                              foregroundColor: Colors.blue,
+                              side: BorderSide(color: AppColors.primary, width: 1),
+                              foregroundColor: AppColors.primary,
                               padding: EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12)
@@ -181,7 +181,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             icon: Icon(Icons.add_box),
                             label: Text("Apply This Job"),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
                               padding: EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
@@ -273,8 +273,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
                 )
             ),
           ],
-        )),
-      ),
+        ),
+      )),
     );
   }
 }

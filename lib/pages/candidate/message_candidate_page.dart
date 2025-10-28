@@ -40,14 +40,6 @@ class _MessageCandidatePageState extends State<MessageCandidatePage> {
 
 
     setState(() {
-      // String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-      // controller.messages.add({
-      //   "employer_id": params['employer_id'],
-      //   "candidate_id": params['candidate_id'],
-      //   "sender_id": params['candidate_id'],
-      //   "content": text,
-      //   "created_at": formattedDateTime
-      // });
       controller.sendMessage(params['employer_id'], text);
       messages.add({"text": text, "isMe": true, "time": "Now"});
       _controller.clear();
@@ -92,7 +84,7 @@ class _MessageCandidatePageState extends State<MessageCandidatePage> {
                         margin: EdgeInsets.symmetric(vertical: 4),
                         constraints: BoxConstraints( maxWidth: MediaQuery.of(context).size.width * 0.7),
                         decoration: BoxDecoration(
-                          color: msg["sender_id"] == msg['candidate_id'] ? Colors.blue : Colors.grey[300],
+                          color: msg["sender_id"] == msg['candidate_id'] ? AppColors.primary : Colors.grey[300],
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(12),
                             topRight: const Radius.circular(12),
@@ -134,7 +126,7 @@ class _MessageCandidatePageState extends State<MessageCandidatePage> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.send, color: Colors.blue),
+                      icon: const Icon(Icons.send, color: AppColors.primary),
                       onPressed: sendMessage,
                     )
                   ],

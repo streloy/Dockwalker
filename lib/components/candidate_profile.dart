@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:dockwalker/utils/AppColors.dart';
 
 class CandidateProfile extends StatelessWidget {
   final dynamic candidate;
@@ -35,7 +36,7 @@ class CandidateProfile extends StatelessWidget {
                         children: [
                           Text(candidate['fullname'], style: const TextStyle( fontWeight: FontWeight.bold, fontSize: 16)),
                           const SizedBox(width: 4),
-                          const Icon(Icons.verified, color: Colors.blue, size: 18),
+                          const Icon(Icons.verified, color: AppColors.primary, size: 18),
                         ],
                       ),
                       Text("Job Role", style: const TextStyle( fontSize: 14, color: Colors.black54)),
@@ -58,7 +59,7 @@ class CandidateProfile extends StatelessWidget {
                   padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade700,
+                    color: AppColors.primary,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
