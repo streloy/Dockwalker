@@ -5,6 +5,10 @@ import 'package:dockwalker/controllers/candidate/profile_candidate_controller.da
 import 'package:dockwalker/pages/candidate/profile_update_page.dart';
 import 'package:dockwalker/utils/AppColors.dart';
 import 'package:dockwalker/components/candidate_certificate_card.dart';
+import 'package:dockwalker/pages/candidate/profile_update_certification.dart';
+import 'package:dockwalker/pages/candidate/profile_update_education.dart';
+import 'package:dockwalker/pages/candidate/profile_update_experience.dart';
+import 'package:dockwalker/pages/candidate/profile_update_language.dart';
 
 
 class ProfileCandidateNewPage extends StatefulWidget {
@@ -32,17 +36,13 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Profile"),
-      //   centerTitle: true,
-      //   backgroundColor: AppColors.primary,
-      //   foregroundColor: Colors.white,
-      // ),
       body: Obx(()=> RefreshIndicator(
-        child: SingleChildScrollView(
+        child: controller.homeService.urlloading.value == true ?
+          Center(child: CircularProgressIndicator()) :
+          SingleChildScrollView (
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(16),
-          child: controller.homeService.urlloading.value == true ? Center(child: CircularProgressIndicator()) : Column(
+          child: Column(
             children: [
               SizedBox(height: 16),
               // Profile picture
@@ -200,7 +200,10 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                   Icon(Icons.file_copy, color: Colors.black87, size: 18,),
                   SizedBox(width: 4),
                   Expanded(child: Text("Certificate & Document", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87))),
-                  Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary))
+                  InkWell(
+                    onTap: () async { final result = await Get.to(()=> ProfileUpdateCertification()); if(result == true) { controller.refreshData(); } },
+                    child: Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                  )
                 ],
               ),
               SizedBox(height: 8),
@@ -232,14 +235,42 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                   Icon(Icons.book_rounded, color: Colors.black87, size: 18),
                   SizedBox(width: 4),
                   Expanded(child: Text("Education", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87))),
-                  Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary))
+                  InkWell(
+                    onTap: () async {
+                      final result = await Get.to(()=> ProfileUpdateEducation());
+                      if(result == true) { controller.refreshData(); }
+                    },
+                    child: Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                  )
                 ],
               ),
+
               SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: Text(controller.education.value, style: TextStyle(fontSize: 16)),
-              ),
+              ...controller.educations.value.map((education) {
+                return Container(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("${education['education_degree']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                          InkWell(
+                            onTap: () { controller.deleteEducation(int.parse(education['id'])); },
+                            child: Icon(Icons.delete),
+                          )
+                        ]
+                      ),
+                      
+                      Text("${education['education_institution']}"),
+                      Text("Grade: ${education['education_grade']}/${education['education_grade_total']}"),
+                      Text("Period: ${education['education_time_range']}"),
+                      SizedBox(height: 12), // optional spacing
+                    ],
+                  ),
+                );
+              }).toList(),
               SizedBox(height: 16),
 
               Row(
@@ -247,14 +278,44 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                   Icon(Icons.work_history, color: Colors.black87, size: 18),
                   SizedBox(width: 4),
                   Expanded(child: Text("Experience", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87))),
-                  Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary))
+                  InkWell(
+                    onTap: () async {
+                      final result = await Get.to(()=> ProfileUpdateExperience());
+                      if(result == true) { controller.refreshData(); }
+                    },
+                    child: Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                  )
                 ],
               ),
               SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: Text(controller.experience.value, style: TextStyle(fontSize: 16)),
-              ),
+              ...controller.experiences.value.map((experience) {
+                return Container(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("${experience['experience_position']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                            InkWell(
+                              onTap: () { controller.deleteExperience(int.parse(experience['id'])); },
+                              child: Icon(Icons.delete),
+                            )
+                          ]
+                      ),
+
+                      Text("${experience['experience_company']}"),
+                      Text("${experience['experience_start']} - ${experience['current'] == "Yes" ? "Current" : experience['experience_end']} " ),
+                      SizedBox(height: 8),
+                      Text("Responsibility", style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(height: 8),
+                      Text("${experience['responsibility']}"),
+                      SizedBox(height: 12), // optional spacing
+                    ],
+                  ),
+                );
+              }).toList(),
               SizedBox(height: 16),
 
               Row(
@@ -295,41 +356,45 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                   Icon(Icons.language, color: Colors.black87, size: 18),
                   SizedBox(width: 4),
                   Expanded(child: Text("Language", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87))),
-                  Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary))
-                ],
-              ),
-              SizedBox(height: 16),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded( child: Text("English", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)) ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(32),
-                          color: Colors.green.shade100
-                        ),
-                        child: Text("Native", style: TextStyle(fontSize: 14, color: Colors.green)),
-                      )
-                    ]
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                      children: [
-                        Expanded( child: Text("Spanish", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)) ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(32),
-                              color: Colors.orange.shade100
-                          ),
-                          child: Text("Conversational", style: TextStyle(fontSize: 14, color: Colors.orange)),
-                        )
-                      ]
+                  InkWell(
+                    onTap: () async {
+                      final result = await Get.to(()=> ProfileUpdateLanguage());
+                      if(result == true) { controller.refreshData(); }
+                    },
+                    child: Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary)),
                   )
                 ],
               ),
+              SizedBox(height: 16),
+              ...controller.languages.value.map((experience) {
+                return Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("${experience['language_name']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                            InkWell(
+                              onTap: () { controller.deleteLanguage(int.parse(experience['id'])); },
+                              child: Icon(Icons.delete),
+                            )
+                          ]
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(32),
+                            color: Colors.green.shade100
+                        ),
+                        child: Text("${experience['language_level']}", style: TextStyle(fontSize: 14, color: Colors.green)),
+                      )
+                    ],
+                  ),
+                );
+              }).toList(),
 
               const SizedBox(height: 24),
               // ElevatedButton.icon(

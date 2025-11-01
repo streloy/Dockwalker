@@ -146,6 +146,134 @@ class HomeService extends GetxService {
     }
   }
 
+  Future candidateUpdateCertificate(String name, String source, String issue_date, String expire_date) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/document');
+    var jsonbody = jsonEncode({ "name": name, "source": source, "issue_date": issue_date, "expire_date": expire_date });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      urlloading.value = false;
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future deleteCandidateCertificate(int id) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/document?id=${id}');
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.delete( url, headers: jsonheader );
+      urlloading.value = false;
+      Get.snackbar("Message", jsonDecode(response.body)['message'], snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.GROUNDED);
+      return;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future candidateUpdateEducation(String degree, String institution, String grade, String grade_total, String time_range) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/education');
+    var jsonbody = jsonEncode({ "degree": degree, "institution": institution, "grade": grade, "grade_total": grade_total, "time_range": time_range });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      urlloading.value = false;
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future deleteCandidateEducation(int id) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/education?id=${id}');
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.delete( url, headers: jsonheader );
+      urlloading.value = false;
+      Get.snackbar("Message", jsonDecode(response.body)['message'], snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.GROUNDED);
+      return;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future candidateUpdateExperience(String position, String company, String start, String end, String current, String responsibility) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/experience');
+    var jsonbody = jsonEncode({ "position": position, "company": company, "start": start, "end": end, "current": current, "responsibility": responsibility });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      urlloading.value = false;
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future deleteCandidateExperience(int id) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/experience?id=${id}');
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.delete( url, headers: jsonheader );
+      urlloading.value = false;
+      Get.snackbar("Message", jsonDecode(response.body)['message'], snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.GROUNDED);
+      return;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future candidateUpdateLanguage(String name, String level) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/language');
+    var jsonbody = jsonEncode({ "name": name, "level": level });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      urlloading.value = false;
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future deleteCandidateLanguage(int id) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/language?id=${id}');
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.delete( url, headers: jsonheader );
+      urlloading.value = false;
+      Get.snackbar("Message", jsonDecode(response.body)['message'], snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.GROUNDED);
+      return;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
   Future uploadPhoto(String photourl) async {
     showMyDialod("Loading", "Please wait.");
     var url = Uri.parse('${baseurl}candidate/profile/photo');

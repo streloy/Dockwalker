@@ -19,6 +19,11 @@ class ProfileCandidateController extends GetxController {
   var resumeurl = "".obs;
   var skills_new = [].obs;
 
+  var certificates = [].obs;
+  var educations = [].obs;
+  var experiences = [].obs;
+  var languages = [].obs;
+
 
   var certificateList = [
     {"id": "1", "certificateName": "Oracle DBA", "certificateCompany": "Oracle", "issueDate": "01-01-2024", "expireDate": "31-12-2025", "status": "Valid"},
@@ -52,9 +57,34 @@ class ProfileCandidateController extends GetxController {
     photourl.value = result['photourl'];
     resumeurl.value = result['resumeurl'];
     skills_new.value = result['skills_new'];
+
+    certificates.value = result['certificates'];
+    educations.value = result['educations'];
+    experiences.value = result['experiences'];
+    languages.value = result['languages'];
   }
 
   Future<void> refreshData() async {
+    populateInfo();
+  }
+
+  Future deleteCertificate(int id) async {
+    await homeService.deleteCandidateCertificate(id);
+    populateInfo();
+  }
+
+  Future deleteEducation(int id) async {
+    await homeService.deleteCandidateEducation(id);
+    populateInfo();
+  }
+
+  Future deleteExperience(int id) async {
+    await homeService.deleteCandidateExperience(id);
+    populateInfo();
+  }
+
+  Future deleteLanguage(int id) async {
+    await homeService.deleteCandidateLanguage(id);
     populateInfo();
   }
 
