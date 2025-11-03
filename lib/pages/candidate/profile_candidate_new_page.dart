@@ -9,6 +9,7 @@ import 'package:dockwalker/pages/candidate/profile_update_certification.dart';
 import 'package:dockwalker/pages/candidate/profile_update_education.dart';
 import 'package:dockwalker/pages/candidate/profile_update_experience.dart';
 import 'package:dockwalker/pages/candidate/profile_update_language.dart';
+import 'package:dockwalker/pages/candidate/profile_update_skill.dart';
 
 
 class ProfileCandidateNewPage extends StatefulWidget {
@@ -19,18 +20,7 @@ class ProfileCandidateNewPage extends StatefulWidget {
 }
 
 class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
-  final List<String> skills = [
-    "JavaScript (ES6+)",
-    "React.js",
-    "Node.js / Express.js",
-    "Python (Django / Flask)",
-    "Database Management (MySQL, PostgreSQL, MongoDB)",
-    "RESTful API Development",
-    "Git / GitHub / CI-CD",
-    "UI/UX Design Principles",
-    "Cloud Deployment (AWS / Firebase)",
-    "Agile / Scrum Methodology",
-  ];
+  final List<String> skills = [];
   final ProfileCandidateController controller = Get.put(ProfileCandidateController());
 
   @override
@@ -71,7 +61,9 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                 children: [
                   const Icon(Icons.calendar_today_outlined, color: AppColors.primary, size: 16),
                   const SizedBox(width: 4),
-                  Text( "Available for work", style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.bold) ),
+                  controller.available.value == "Yes" ?
+                  Text( "Available for work", style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.bold) ) :
+                  Text( "Not available for work", style: TextStyle(color: AppColors.primary, fontSize: 16, fontWeight: FontWeight.bold) ),
                 ],
               ),
 
@@ -96,7 +88,7 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
               ),
 
               SizedBox(height: 4),
-              Text("Experienced Full Stack Developer with 8+ years of expertise in web development, GIS applications, and AI/ML integration. Proficient in JavaScript (Node.js, React, Angular), Python (Django, Flask), PHP (Laravel, CodeIgniter), and databases (MySQL, PostgreSQL, NoSQL).", textAlign: TextAlign.center,),
+              Text("${controller.detail.value}", textAlign: TextAlign.center,),
 
               SizedBox(height: 4),
               Center(
@@ -210,19 +202,60 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
               Container(
                 height: 200,
                 child: ListView.builder(
-                  itemCount: controller.certificateList.length,
+                  itemCount: controller.certificates.length,
                   physics: ScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
+
                   itemBuilder: (context, index) {
-                    dynamic item = controller.certificateList[index];
+                    dynamic item = controller.certificates[index];
+                    print(item);
                     return GestureDetector(
-                      child: CandidateCertificateCard(id: item['id'],
-                          certificateName: item['certificateName'],
-                          certificateCompany: item['certificateCompany'],
-                          issueDate: item['issueDate'],
-                          expireDate: item['expireDate'],
-                          status: item['status']),
+                      // child: CandidateCertificateCard(id: item['id'],
+                      //     certificateName: item['document_name'],
+                      //     certificateCompany: item['document_source'],
+                      //     issueDate: item['document_issue_date'],
+                      //     expireDate: item['document_expire_date'],
+                      //     status: item['status'] ?? "Valid"),
+                      // onLongPress: () { controller.deleteCertificate(int.parse(item['id'])); },
+                      child: Container(
+                        width: 250,
+                        height: 200,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                        margin: EdgeInsets.only(right: 16),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(32)
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Icon(Icons.file_copy, color: Colors.black87,),
+                                InkWell(
+                                  onTap: () { controller.deleteCertificate(int.parse(item['id'])); },
+                                  child: Icon(Icons.close, color: AppColors.primary),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Text(item['document_name'], style: Theme.of(context).textTheme.labelLarge?.copyWith( fontWeight: FontWeight.bold )),
+                            Text(item['document_source']),
+                            SizedBox(height: 4),
+                            Text("Issued: ${item['document_issue_date']}"),
+                            Text("Expired: ${item['document_expire_date']}"),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                              decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(32)),
+                              child: Text(item['status'] ?? "Valid", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold) ),
+                            )
+                          ],
+                        ),
+                      ),
                     );
                   }
                 ),
@@ -249,16 +282,29 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
               ...controller.educations.value.map((education) {
                 return Container(
                   width: double.infinity,
+                  padding: EdgeInsets.all(12),
+                  margin: EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("${education['education_degree']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text("${education['education_degree']}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                           InkWell(
                             onTap: () { controller.deleteEducation(int.parse(education['id'])); },
-                            child: Icon(Icons.delete),
+                            child: Icon(Icons.close, size: 16),
                           )
                         ]
                       ),
@@ -291,16 +337,29 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
               ...controller.experiences.value.map((experience) {
                 return Container(
                   width: double.infinity,
+                  padding: EdgeInsets.all(12),
+                  margin: EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("${experience['experience_position']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text("${experience['experience_position']}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                             InkWell(
                               onTap: () { controller.deleteExperience(int.parse(experience['id'])); },
-                              child: Icon(Icons.delete),
+                              child: Icon(Icons.close, size: 16),
                             )
                           ]
                       ),
@@ -316,38 +375,47 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                   ),
                 );
               }).toList(),
-              SizedBox(height: 16),
 
+              // New Skills
+              SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.settings, color: Colors.black87, size: 18),
+                  Icon(Icons.lightbulb, color: Colors.black87, size: 18),
                   SizedBox(width: 4),
-                  Expanded(child: Text("Skills & Expertise", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87))),
-                  Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary))
+                  Expanded(child: Text("Skills", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87))),
+                  InkWell(
+                    onTap: () async {
+                      final result = await Get.to(()=> ProfileUpdateSkill());
+                      if(result == true) { controller.refreshData(); }
+                    },
+                    child: Text("Add", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                  )
                 ],
               ),
               SizedBox(height: 8),
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: Text(controller.skills.value ?? "", style: TextStyle(fontSize: 16)),
-              // ),
-
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                alignment: WrapAlignment.start,
-                runAlignment: WrapAlignment.start,
-                children: controller.skills_new.map((item) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.primary, width: 1),
-                      borderRadius: BorderRadius.circular(32),
-                      color: Colors.white,
-                    ),
-                    child: Text( item, style: const TextStyle( color: AppColors.primary, fontWeight: FontWeight.w500 ) ),
-                  );
-                }).toList(),
+              Container(
+                width: double.infinity,
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  runAlignment: WrapAlignment.start,
+                  children: controller.cskills.value.map((skill) {
+                    return Chip(
+                      label: Text( "${skill['skill_name']}", style: TextStyle(color: AppColors.primary) ),
+                      deleteIcon: Icon(Icons.close, color: AppColors.primary),
+                      onDeleted: () {
+                        controller.deleteSkill(int.parse(skill['id']));
+                      },
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                        side: BorderSide(color: AppColors.primary),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
 
               SizedBox(height: 16),
@@ -366,52 +434,33 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                 ],
               ),
               SizedBox(height: 16),
-              ...controller.languages.value.map((experience) {
-                return Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("${experience['language_name']}", style: TextStyle(fontWeight: FontWeight.bold)),
-                            InkWell(
-                              onTap: () { controller.deleteLanguage(int.parse(experience['id'])); },
-                              child: Icon(Icons.delete),
-                            )
-                          ]
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
+              Container(
+                width: double.infinity,
+                child: Column(
+                  children: controller.languages.value.map((language) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(child: Text( "${language['language_name']}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)) ),
+                        Chip(
+                          label: Text( "${language['language_level']}", style: TextStyle(color: language['language_level'] == 'Basic' ? Colors.red : language['language_level'] == 'Intermediate' ? Colors.orange : language['language_level'] == 'Proficient' ? Colors.green : Colors.green) ),
+                          backgroundColor: language['language_level'] == 'Basic' ? Colors.red.shade100 : language['language_level'] == 'Intermediate' ? Colors.orange.shade100 : language['language_level'] == 'Proficient' ? Colors.green.shade100 : Colors.green.shade100,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32),
-                            color: Colors.green.shade100
+                            side: BorderSide(color: language['language_level'] == 'Basic' ? Colors.red : language['language_level'] == 'Intermediate' ? Colors.orange : language['language_level'] == 'Proficient' ? Colors.green : Colors.green),
+                          ),
+                          padding: EdgeInsets.only(left: 0, top: 0, right: 0, bottom: 0),
                         ),
-                        child: Text("${experience['language_level']}", style: TextStyle(fontSize: 14, color: Colors.green)),
-                      )
-                    ],
-                  ),
-                );
-              }).toList(),
-
-              const SizedBox(height: 24),
-              // ElevatedButton.icon(
-              //   onPressed: () {
-              //     Get.to( () => ProfileUpdatePage(), transition: Transition.rightToLeft );
-              //   },
-              //   icon: const Icon(Icons.edit),
-              //   label: const Text("Update Information"),
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: AppColors.primary,
-              //     foregroundColor: AppColors.darkText,
-              //     minimumSize: const Size(double.infinity, 50),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(4),
-              //     ),
-              //   ),
-              // ),
+                        SizedBox(width: 12),
+                        InkWell(
+                          onTap: () {controller.deleteLanguage(int.parse(language['id'])); },
+                          child: Icon(Icons.close, size: 16),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
 
               const SizedBox(height: 24),
               ElevatedButton.icon(

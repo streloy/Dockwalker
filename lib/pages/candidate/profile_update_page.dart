@@ -251,11 +251,12 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                   SizedBox(
                     width: double.infinity,
                     child: TextFormField(
-                      controller: _controller.educationController,
+                      controller: _controller.detailController,
                       maxLines: null,
+                      minLines: 4,
                       style: const TextStyle(color: AppColors.secondary),
                       decoration: InputDecoration(
-                        labelText: "Education",
+                        labelText: "Candidate Detail",
                         labelStyle: const TextStyle(color: AppColors.secondary),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: AppColors.secondary, width: 1),
@@ -276,46 +277,17 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
                     child: TextFormField(
-                      controller: _controller.experienceController,
+                      controller: _controller.availableController,
+                      validator: _controller.availabilityValidation,
                       maxLines: null,
                       style: const TextStyle(color: AppColors.secondary),
                       decoration: InputDecoration(
-                        labelText: "Experience",
-                        labelStyle: const TextStyle(color: AppColors.secondary),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: AppColors.secondary, width: 1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: AppColors.secondary, width: 2),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                          borderSide: BorderSide(color: Colors.red, width: 1),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                          borderSide: BorderSide(color: Colors.red, width: 2.0),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextFormField(
-                      controller: _controller.skillsController,
-                      maxLines: null,
-                      style: const TextStyle(color: AppColors.secondary),
-                      decoration: InputDecoration(
-                        labelText: "Skills",
+                        labelText: "Candidate Availability",
+                        hintText: "e.g. Yes/No",
                         labelStyle: const TextStyle(color: AppColors.secondary),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: AppColors.secondary, width: 1),
@@ -351,7 +323,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                         ),
                       ),
                       onPressed: () { _controller.updateProfile(); },
-                      icon: Icon(Icons.login, size: 18 ),
+                      icon: Icon(Icons.login_outlined, size: 18 ),
                       label: const Text( "Update Info", style: TextStyle( color: Colors.white, fontWeight: FontWeight.bold ), ),
                     ),
                   ),

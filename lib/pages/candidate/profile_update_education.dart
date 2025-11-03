@@ -46,7 +46,7 @@ class _ProfileUpdateEducationState extends State<ProfileUpdateEducation> {
       var statusCode = response.statusCode;
       if (statusCode == 200) {
         setState(() {
-          Get.back();
+          Get.back(result: true);
           Get.snackbar("Message", body['message'], backgroundColor: Colors.green, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
         });
       } else {
@@ -240,7 +240,7 @@ class _ProfileUpdateEducationState extends State<ProfileUpdateEducation> {
                     onPressed: () {
                       updateInformation();
                     },
-                    icon: Obx(()=> homeService.urlloading.value == true ? Text("") : Icon(Icons.login, size: 18, color: Colors.white ) ),
+                    icon: Obx(()=> homeService.urlloading.value == true ? Text("") : Icon(Icons.add, size: 18, color: Colors.white ) ),
                     label: Obx(()=> homeService.urlloading.value == true ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white) ) : Text( "Add Education", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white ) ))
                 ),
               ),

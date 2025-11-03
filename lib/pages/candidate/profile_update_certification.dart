@@ -45,7 +45,7 @@ class _ProfileUpdateCertificationState extends State<ProfileUpdateCertification>
       var statusCode = response.statusCode;
       if (statusCode == 200) {
         setState(() {
-          Get.back();
+          Get.back(result: true);
           Get.snackbar("Message", body['message'], backgroundColor: Colors.green, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
         });
       } else {

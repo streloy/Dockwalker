@@ -28,7 +28,7 @@ class CandidateCertificateCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       margin: EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
-        color: Colors.white10,
+        color: Colors.white,
         border: Border.all(color: Colors.grey.shade300, width: 1),
         borderRadius: BorderRadius.circular(32)
       ),

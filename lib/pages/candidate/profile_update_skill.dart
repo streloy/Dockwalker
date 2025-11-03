@@ -4,14 +4,14 @@ import 'package:dockwalker/services/home_service.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 
-class ProfileUpdateLanguage extends StatefulWidget {
-  const ProfileUpdateLanguage({super.key});
+class ProfileUpdateSkill extends StatefulWidget {
+  const ProfileUpdateSkill({super.key});
 
   @override
-  State<ProfileUpdateLanguage> createState() => _ProfileUpdateLanguageState();
+  State<ProfileUpdateSkill> createState() => _ProfileUpdateSkillState();
 }
 
-class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
+class _ProfileUpdateSkillState extends State<ProfileUpdateSkill> {
   final HomeService homeService = Get.find<HomeService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -25,8 +25,8 @@ class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
 
   String? levelValidation(String? value) {
     if (value == null || value.isEmpty) { return "Input field cannot be empty!"; }
-    const allowedLevels = ['Basic', 'Intermediate', 'Proficient', 'Native'];
-    if (!allowedLevels.contains(value.trim())) { return "Please enter a valid level: Basic, Intermediate, Proficient, or Native."; }
+    const allowedLevels = ['Basic', 'Moderate', 'Expert'];
+    if (!allowedLevels.contains(value.trim())) { return "Please enter a valid level: Basic, Moderate, or Expert."; }
     return null;
   }
 
@@ -39,9 +39,9 @@ class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
 
   Future updateInformation() async {
     if (formKey.currentState!.validate()) {
-      var response = await homeService.candidateUpdateLanguage(
-          nameController.text,
-          levelController.text,
+      var response = await homeService.candidateUpdateSkill(
+        nameController.text,
+        levelController.text,
       );
       var body = jsonDecode(response.body);
       var statusCode = response.statusCode;
@@ -60,7 +60,7 @@ class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Language"),
+        title: Text("Add Skills"),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
@@ -78,7 +78,7 @@ class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
                   maxLines: null,
                   style: const TextStyle(color: AppColors.secondary),
                   decoration: InputDecoration(
-                    labelText: "Language Name",
+                    labelText: "Skill Name",
                     labelStyle: const TextStyle(color: AppColors.secondary),
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: AppColors.secondary, width: 1),
@@ -109,7 +109,7 @@ class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
                   style: const TextStyle(color: AppColors.secondary),
                   decoration: InputDecoration(
                     labelText: "Expert Level",
-                    hintText: "Basic/Intermediate/Proficient/Native",
+                    hintText: "Basic/Moderate/Expert",
                     labelStyle: const TextStyle(color: AppColors.secondary),
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: AppColors.secondary, width: 1),
@@ -148,7 +148,7 @@ class _ProfileUpdateLanguageState extends State<ProfileUpdateLanguage> {
                       updateInformation();
                     },
                     icon: Obx(()=> homeService.urlloading.value == true ? Text("") : Icon(Icons.add, size: 18, color: Colors.white ) ),
-                    label: Obx(()=> homeService.urlloading.value == true ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white) ) : Text( "Add Language", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white ) ))
+                    label: Obx(()=> homeService.urlloading.value == true ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white) ) : Text( "Add Skill", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white ) ))
                 ),
               ),
             ],

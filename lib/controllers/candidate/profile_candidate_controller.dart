@@ -12,6 +12,8 @@ class ProfileCandidateController extends GetxController {
   var email = "".obs;
   var mobile = "".obs;
   var address = "".obs;
+  var detail = "".obs;
+  var available = "".obs;
   var education = "".obs;
   var experience = "".obs;
   var skills = "".obs;
@@ -23,6 +25,7 @@ class ProfileCandidateController extends GetxController {
   var educations = [].obs;
   var experiences = [].obs;
   var languages = [].obs;
+  var cskills = [].obs;
 
 
   var certificateList = [
@@ -51,6 +54,8 @@ class ProfileCandidateController extends GetxController {
     email.value = result['email'];
     mobile.value = result['mobile'];
     address.value = result['address'];
+    detail.value = result['detail'];
+    available.value = result['available'];
     education.value = result['education'];
     experience.value = result['experience'];
     skills.value = result['skills'];
@@ -62,6 +67,7 @@ class ProfileCandidateController extends GetxController {
     educations.value = result['educations'];
     experiences.value = result['experiences'];
     languages.value = result['languages'];
+    cskills.value = result['cskills'];
   }
 
   Future<void> refreshData() async {
@@ -85,6 +91,11 @@ class ProfileCandidateController extends GetxController {
 
   Future deleteLanguage(int id) async {
     await homeService.deleteCandidateLanguage(id);
+    populateInfo();
+  }
+
+  Future deleteSkill(int id) async {
+    await homeService.deleteCandidateSkill(id);
     populateInfo();
   }
 

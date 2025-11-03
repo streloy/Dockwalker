@@ -123,10 +123,10 @@ class HomeService extends GetxService {
     }
   }
 
-  Future updateCandidateInfo(String fullname, String address, String education, String experience, String skills) async {
+  Future updateCandidateInfo(String fullname, String address, String detail, String available) async {
     showMyDialod("Loading", "Please wait.");
     var url = Uri.parse('${baseurl}candidate/profile');
-    var jsonbody = jsonEncode({ "fullname": fullname, "address": address, "education": education, "experience": experience, "skills": skills });
+    var jsonbody = jsonEncode({ "fullname": fullname, "address": address, "detail": detail, "available": available });
     var token = await getStorage.read("TOKEN").toString();
     var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
     try {
@@ -261,6 +261,38 @@ class HomeService extends GetxService {
   Future deleteCandidateLanguage(int id) async {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/language?id=${id}');
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.delete( url, headers: jsonheader );
+      urlloading.value = false;
+      Get.snackbar("Message", jsonDecode(response.body)['message'], snackPosition: SnackPosition.BOTTOM, snackStyle: SnackStyle.GROUNDED);
+      return;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future candidateUpdateSkill(String name, String level) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/skill');
+    var jsonbody = jsonEncode({ "name": name, "level": level });
+    var token = await getStorage.read("TOKEN").toString();
+    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    try {
+      final response = await http.post( url, headers: jsonheader, body: jsonbody );
+      urlloading.value = false;
+      return response;
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
+  Future deleteCandidateSkill(int id) async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}candidate/profile/skill?id=${id}');
     var token = await getStorage.read("TOKEN").toString();
     var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
     try {

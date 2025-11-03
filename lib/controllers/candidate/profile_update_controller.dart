@@ -14,8 +14,8 @@ class ProfileUpdateController extends GetxController {
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
-  final TextEditingController educationController = TextEditingController();
-  final TextEditingController experienceController = TextEditingController();
+  final TextEditingController detailController = TextEditingController();
+  final TextEditingController availableController = TextEditingController();
   final TextEditingController skillsController = TextEditingController();
 
   final QuillController quillController = QuillController.basic();
@@ -34,8 +34,6 @@ class ProfileUpdateController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
-    fullnameController.text = "Asdasdasd";
   }
 
 
@@ -49,9 +47,8 @@ class ProfileUpdateController extends GetxController {
     var result = jsonDecode(info)['result'];
     fullnameController.text = result['fullname'] ?? "";
     addressController.text = result['address'] ?? "";
-    educationController.text = result['education'] ?? "";
-    experienceController.text = result['experience'] ?? "";
-    skillsController.text = result['skills'] ?? "";
+    detailController.text = result['detail'] ?? "";
+    availableController.text = result['available'] ?? "Yes";
 
     if(result['photo'].toString().isNotEmpty) {
       photourl.value = result['photourl'];
@@ -66,7 +63,12 @@ class ProfileUpdateController extends GetxController {
 
   Future updateProfile() async {
     if (formKey.currentState!.validate()) {
-      homeService.updateCandidateInfo( fullnameController.text, addressController.text, educationController.text, experienceController.text, skillsController.text );
+      homeService.updateCandidateInfo(
+          fullnameController.text,
+          addressController.text,
+          detailController.text,
+          availableController.text
+      );
     }
   }
 
@@ -105,6 +107,13 @@ class ProfileUpdateController extends GetxController {
   String? passwordValidation(String?  value) {
     if (value == null || value.isEmpty) { return "Please enter your password"; }
     if (value.length < 6) { return "Password must be at least 6 characters"; }
+    return null;
+  }
+
+  String? availabilityValidation(String? value) {
+    if (value == null || value.isEmpty) { return "Input field cannot be empty!"; }
+    const allowedLevels = ['Yes', 'No', 'Expert'];
+    if (!allowedLevels.contains(value.trim())) { return "Please enter a valid level: Yes or No."; }
     return null;
   }
 
