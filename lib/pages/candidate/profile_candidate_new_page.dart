@@ -152,7 +152,7 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(4) ),
                       ),
-                      child: Text("Applied\n4", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
+                      child: Text("Applied\n${controller.stat['applied'] ?? ''}", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -165,22 +165,20 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: Text("Interviews\n0", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
+                      child: Text("Interviews\n${controller.stat['shortlist'] ?? ''}", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Get.to(()=> ProfileCandidateNewPage());
-                      },
+                      onPressed: () { },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: const Text("Offers\n1", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
+                      child: Text("Offers\n${controller.stat['accept'] ?? ''}", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -206,18 +204,10 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                   physics: ScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-
                   itemBuilder: (context, index) {
                     dynamic item = controller.certificates[index];
                     print(item);
                     return GestureDetector(
-                      // child: CandidateCertificateCard(id: item['id'],
-                      //     certificateName: item['document_name'],
-                      //     certificateCompany: item['document_source'],
-                      //     issueDate: item['document_issue_date'],
-                      //     expireDate: item['document_expire_date'],
-                      //     status: item['status'] ?? "Valid"),
-                      // onLongPress: () { controller.deleteCertificate(int.parse(item['id'])); },
                       child: Container(
                         width: 250,
                         height: 200,

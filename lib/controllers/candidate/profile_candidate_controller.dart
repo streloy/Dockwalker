@@ -27,6 +27,7 @@ class ProfileCandidateController extends GetxController {
   var languages = [].obs;
   var cskills = [].obs;
 
+  var stat = {}.obs;
 
   var certificateList = [
     {"id": "1", "certificateName": "Oracle DBA", "certificateCompany": "Oracle", "issueDate": "01-01-2024", "expireDate": "31-12-2025", "status": "Valid"},
@@ -68,6 +69,8 @@ class ProfileCandidateController extends GetxController {
     experiences.value = result['experiences'];
     languages.value = result['languages'];
     cskills.value = result['cskills'];
+
+    stat.value = result['stat'];
   }
 
   Future<void> refreshData() async {
