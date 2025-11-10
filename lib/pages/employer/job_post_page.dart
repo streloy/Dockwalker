@@ -89,14 +89,30 @@ class _JobPostPageState extends State<JobPostPage> {
                         _buildSectionTitle('Basic Information'),
                         const SizedBox(height: 8),
 
+                        // Text('Job Title *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        // const SizedBox(height: 8),
+                        // _buildTextFormField(
+                        //     tlabel: "Job Title",
+                        //     tController: controller.titleController,
+                        //     tvalidator: controller.textValidation
+                        // ),
+                        // const SizedBox(height: 8),
+
                         Text('Job Title *', style: TextStyle(fontWeight: FontWeight.w600)),
                         const SizedBox(height: 8),
-                        _buildTextFormField(
-                            tlabel: "Job Title",
-                            tController: controller.titleController,
-                            tvalidator: controller.textValidation
+                        _buildDropdownField(
+                          tlabel: 'Job Title',
+                          selectedValue: controller.selectedTitle.value,
+                          items: controller.masterJobTitle.value.cast<String>(),
+                          prefixIcon: Icons.work_outline,
+                          tvalidator: (value) {
+                            if (value == null || value.isEmpty) return "Please select a job title";
+                            return null;
+                          },
+                          onChanged: (value) {
+                            controller.selectedTitle.value = value ?? "";
+                          },
                         ),
-                        const SizedBox(height: 8),
 
                         Text('Department *', style: TextStyle(fontWeight: FontWeight.w600)),
                         _buildDepartmentChips(),
@@ -162,9 +178,9 @@ class _JobPostPageState extends State<JobPostPage> {
                         _buildCurrencyChips(),
                         const SizedBox(height: 16),
 
-                        Text('Period *', style: TextStyle(fontWeight: FontWeight.w600)),
-                        _buildPeriodChips(),
-                        const SizedBox(height: 16),
+                        // Text('Period *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        // _buildPeriodChips(),
+                        // const SizedBox(height: 16),
 
                         _buildSectionTitle('Job Detail'),
                         const SizedBox(height: 8),
@@ -219,14 +235,14 @@ class _JobPostPageState extends State<JobPostPage> {
                             prefixIcon: Icons.alarm
                         ),
 
-                        Text('Vacancies *', style: TextStyle(fontWeight: FontWeight.w600)),
-                        const SizedBox(height: 8),
-                        _buildTextFormField(
-                            tlabel: 'Vacancies',
-                            tController: controller.vacanciesController,
-                            tvalidator: controller.textValidation,
-                            keyboardType: TextInputType.number
-                        ),
+                        // Text('Vacancies *', style: TextStyle(fontWeight: FontWeight.w600)),
+                        // const SizedBox(height: 8),
+                        // _buildTextFormField(
+                        //     tlabel: 'Vacancies',
+                        //     tController: controller.vacanciesController,
+                        //     tvalidator: controller.textValidation,
+                        //     keyboardType: TextInputType.number
+                        // ),
 
                         Text('Required Experience *', style: TextStyle(fontWeight: FontWeight.w600)),
                         const SizedBox(height: 8),
@@ -468,7 +484,7 @@ class _JobPostPageState extends State<JobPostPage> {
         items: items.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(value),
+            child: Text(value)
           );
         }).toList(),
       ),

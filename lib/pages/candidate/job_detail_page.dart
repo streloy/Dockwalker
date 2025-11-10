@@ -131,15 +131,14 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       ],
                     ),
 
-                    SizedBox(height: 16),
-
-                    Row(
-                      children: [
-                        const Icon(Icons.people_rounded, size: 14, color: Colors.black),
-                        const SizedBox(width: 4),
-                        Expanded(child: Text("Vacancies: ${_controller.jobdata['vacancies']}"),)
-                      ],
-                    ),
+                    // SizedBox(height: 16),
+                    // Row(
+                    //   children: [
+                    //     const Icon(Icons.people_rounded, size: 14, color: Colors.black),
+                    //     const SizedBox(width: 4),
+                    //     Expanded(child: Text("Vacancies: ${_controller.jobdata['vacancies']}"),)
+                    //   ],
+                    // ),
 
                     const SizedBox(height: 16),
                     Text( "Description", textAlign: TextAlign.start, style: Theme.of(context).textTheme.labelLarge?.copyWith( fontWeight: FontWeight.bold, fontSize: 18 ) ),

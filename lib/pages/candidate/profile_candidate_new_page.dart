@@ -140,50 +140,6 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                 ),
               ),
 
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.to( () => JobAppliedListPage(), transition: Transition.rightToLeft );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(4) ),
-                      ),
-                      child: Text("Applied\n${controller.stat['applied'] ?? ''}", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () { },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      child: Text("Interviews\n${controller.stat['shortlist'] ?? ''}", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () { },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      child: Text("Offers\n${controller.stat['accept'] ?? ''}", textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ],
-              ),
-
               const SizedBox(height: 24),
               Row(crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -199,6 +155,7 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
               SizedBox(height: 8),
               Container(
                 height: 200,
+                alignment: Alignment.centerLeft,
                 child: ListView.builder(
                   itemCount: controller.certificates.length,
                   physics: ScrollPhysics(),
@@ -215,8 +172,8 @@ class _ProfileCandidateNewPageState extends State<ProfileCandidateNewPage> {
                         margin: EdgeInsets.only(right: 16),
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(color: Colors.grey.shade300, width: 1),
-                            borderRadius: BorderRadius.circular(32)
+                            border: Border.all(color: Colors.grey.shade300, width: 0),
+                            borderRadius: BorderRadius.circular(12)
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

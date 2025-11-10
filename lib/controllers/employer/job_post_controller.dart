@@ -21,12 +21,14 @@ class JobPostController extends GetxController {
   final TextEditingController durationController = TextEditingController();
   final TextEditingController vacanciesController = TextEditingController();
 
+  var masterJobTitle      = [].obs;
   var masterJobDepartment = [].obs;
   var masterJobCurrency   = [].obs;
   var masterJobExperience = <String>[].obs;
   var masterJobPeriod     = [].obs;
   var masterJobVisa       = <String>[].obs;
 
+  var selectedTitle = "".obs;
   var selectedDepartment = "".obs;
   var selectedCurrency = "".obs;
   var selectedPeriod = "".obs;
@@ -59,6 +61,10 @@ class JobPostController extends GetxController {
 
 
   Future getMasterData() async {
+    var mjt = await homeService.masterJobTitle();
+    masterJobTitle.value = mjt.map((item) => item['title']!).toList();
+    selectedTitle.value = masterJobTitle.value[0];
+
     var mjd = await homeService.masterJobDepartment();
     masterJobDepartment.value = mjd.map((item) => item['title']!).toList();
     selectedDepartment.value = masterJobDepartment.value[0];
@@ -89,7 +95,7 @@ class JobPostController extends GetxController {
   Future postNewJob() async {
     if (formKey.currentState!.validate()) {
       var jsonbody = jsonEncode({
-        "title": titleController.text,
+        "title": selectedTitle.value,
         "department": selectedDepartment.value,
         "yacht_name": yachtController.text,
         "location": locationController.text,
@@ -105,7 +111,7 @@ class JobPostController extends GetxController {
         "urgent": isUrgent.value == true ? "Yes" : "No",
         "feature": isFeatured.value == true ? "Yes" : "No",
         "visa": selectedVisa.value,
-        "vacancies": vacanciesController.text,
+        "vacancies": vacanciesController.text ?? "1",
         "deadline": deadlineController.text,
       });
 

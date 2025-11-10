@@ -21,6 +21,8 @@ class _ProfileUpdateCertificationState extends State<ProfileUpdateCertification>
   final TextEditingController issueController = TextEditingController();
   final TextEditingController expireController = TextEditingController();
 
+  bool noExpiry = false;
+
   String? inputValidation(String?  value) {
     if (value == null || value.isEmpty) { return "Input field can not be empty!"; }
     return null;
@@ -30,6 +32,15 @@ class _ProfileUpdateCertificationState extends State<ProfileUpdateCertification>
     if (value == null || value.isEmpty) { return "Please enter a date"; }
     final RegExp dateRegEx = RegExp(r'^\d{4}-\d{2}-\d{2}$');
     if (!dateRegEx.hasMatch(value)) { return "Enter date in YYYY-MM-DD format"; }
+    return null;
+  }
+
+  String? expireDateValidation(String? value) {
+    if (value == null || value.isEmpty) { return "Please enter a date"; }
+    final RegExp dateRegEx = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+    if(noExpiry == false) {
+      if (!dateRegEx.hasMatch(value)) { return "Enter date in YYYY-MM-DD format"; }
+    }
     return null;
   }
 
@@ -159,12 +170,38 @@ class _ProfileUpdateCertificationState extends State<ProfileUpdateCertification>
                 ),
               ),
 
+              // Toggle Switch for "No Expiry Date"
+              Container(
+                margin: EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text( "No Expiry Date", style: TextStyle( color: AppColors.secondary, fontSize: 16, fontWeight: FontWeight.w500, ), ),
+                    Switch(
+                      value: noExpiry,
+                      activeColor: AppColors.secondary,
+                      onChanged: (value) {
+                        setState(() {
+                          noExpiry = value;
+                          if (noExpiry) {
+                            expireController.text = "No expire date";
+                          } else {
+                            expireController.clear();
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
               Container(
                 margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 child: TextFormField(
                   controller: expireController,
-                  validator: dateValidation,
+                  validator: expireDateValidation,
                   maxLines: null,
+                  readOnly: noExpiry,
                   style: const TextStyle(color: AppColors.secondary),
                   decoration: InputDecoration(
                     labelText: "Expire Date",

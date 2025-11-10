@@ -823,6 +823,26 @@ class HomeService extends GetxService {
     }
   }
 
+  Future masterJobTitle() async {
+    urlloading.value = true;
+    var url = Uri.parse('${baseurl}employer/jobs/master_job_title');
+    var token = await getStorage.read("TOKEN").toString();
+    var headers = { "Authorization": "${token}" };
+    try {
+      var response = await http.get( url, headers: headers );
+      urlloading.value = false;
+      if(response.statusCode != 200) {
+        showDangerSnack("Message", jsonDecode(response.body)['message']);
+        return;
+      } else {
+        return jsonDecode(response.body)['result'];
+      }
+    } catch (e) {
+      closeMyDialog();
+      showDangerSnack("Message", e.toString());
+    }
+  }
+
   Future postNewJob(var jsonbody) async {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs');
