@@ -8,8 +8,8 @@ import 'package:dio/dio.dart';
 class HomeService extends GetxService {
 
   final dio = Dio();
-  var baseurl = "https://dockwalkerapp.com/api/";
-  // var baseurl = "http://localhost/dockwalker/api/";
+  // var baseurl = "https://dockwalkerapp.com/api/";
+  var baseurl = "http://localhost/dockwalker/api/";
   // var baseurl = "http://192.168.68.102/dockwalker/api/";
   var urlloading = false.obs;
   var loading = false;
@@ -106,7 +106,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
 
     try {
       var response = await http.get( url, headers: headers );
@@ -128,7 +128,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}candidate/profile');
     var jsonbody = jsonEncode({ "fullname": fullname, "address": address, "detail": detail, "available": available });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       closeMyDialog();
@@ -151,7 +151,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}candidate/profile/document');
     var jsonbody = jsonEncode({ "name": name, "source": source, "issue_date": issue_date, "expire_date": expire_date });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       urlloading.value = false;
@@ -166,7 +166,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/document?id=${id}');
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.delete( url, headers: jsonheader );
       urlloading.value = false;
@@ -183,7 +183,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}candidate/profile/education');
     var jsonbody = jsonEncode({ "degree": degree, "institution": institution, "grade": grade, "grade_total": grade_total, "time_range": time_range });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       urlloading.value = false;
@@ -198,7 +198,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/education?id=${id}');
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.delete( url, headers: jsonheader );
       urlloading.value = false;
@@ -215,7 +215,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}candidate/profile/experience');
     var jsonbody = jsonEncode({ "position": position, "company": company, "start": start, "end": end, "current": current, "responsibility": responsibility });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       urlloading.value = false;
@@ -230,7 +230,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/experience?id=${id}');
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.delete( url, headers: jsonheader );
       urlloading.value = false;
@@ -247,7 +247,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}candidate/profile/language');
     var jsonbody = jsonEncode({ "name": name, "level": level });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       urlloading.value = false;
@@ -262,7 +262,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/language?id=${id}');
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.delete( url, headers: jsonheader );
       urlloading.value = false;
@@ -279,7 +279,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}candidate/profile/skill');
     var jsonbody = jsonEncode({ "name": name, "level": level });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       urlloading.value = false;
@@ -294,7 +294,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}candidate/profile/skill?id=${id}');
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.delete( url, headers: jsonheader );
       urlloading.value = false;
@@ -655,7 +655,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/profile/');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
 
     try {
       var response = await http.get( url, headers: headers );
@@ -677,7 +677,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}employer/profile');
     var jsonbody = jsonEncode({ "company_name": company_name, "mobile": mobile, "address": address, "website": website, "description": description });
     var token = await getStorage.read("TOKEN").toString();
-    var jsonheader = { "Content-Type": "application/json", "Authorization": "${token}" };
+    var jsonheader = { "Content-Type": "application/json", "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: jsonheader, body: jsonbody );
       closeMyDialog();
@@ -726,7 +726,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs/master_job_department');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
 
     try {
       var response = await http.get( url, headers: headers );
@@ -747,7 +747,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs/master_job_currency');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
     try {
       var response = await http.get( url, headers: headers );
       urlloading.value = false;
@@ -767,7 +767,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs/master_job_experience');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
     try {
       var response = await http.get( url, headers: headers );
       urlloading.value = false;
@@ -787,7 +787,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs/master_job_period');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
     try {
       var response = await http.get( url, headers: headers );
       urlloading.value = false;
@@ -807,7 +807,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs/master_job_visa');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
     try {
       var response = await http.get( url, headers: headers );
       urlloading.value = false;
@@ -827,7 +827,7 @@ class HomeService extends GetxService {
     urlloading.value = true;
     var url = Uri.parse('${baseurl}employer/jobs/master_job_title');
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
     try {
       var response = await http.get( url, headers: headers );
       urlloading.value = false;
@@ -848,7 +848,7 @@ class HomeService extends GetxService {
     var url = Uri.parse('${baseurl}employer/jobs');
     var jsonheader = { "Content-Type": "application/json" };
     var token = await getStorage.read("TOKEN").toString();
-    var headers = { "Authorization": "${token}" };
+    var headers = { "authorization": "${token}" };
     try {
       final response = await http.post( url, headers: headers, body: jsonbody );
       urlloading.value = false;
